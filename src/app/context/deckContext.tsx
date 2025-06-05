@@ -8,6 +8,7 @@ type DeckContextType = {
     colors: Colors,
     deck: Deck[];
     limit: number;
+    setColors: (colors: Colors) => void;
     setLimit: (limit: number) => void;
     fetchExample: () => void;
 }
@@ -25,7 +26,7 @@ export const DeckProvider = ({children} : {children: ReactNode})=> {
         then((d)=>setDeck(d))
     }
     return (
-        <deckContext.Provider value={{deck, limit, setLimit, fetchExample}}>
+        <deckContext.Provider value={{colors, deck, limit, setColors, setLimit, fetchExample}}>
             {children}
         </deckContext.Provider>
     );

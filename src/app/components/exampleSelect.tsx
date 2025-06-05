@@ -8,13 +8,13 @@ export default function ExampleSelect(){
     return (
         <Box sx={{display: "flex", flexDirection: "row", width: "100%", m:2}}>
             <TextField
-                id="limit"
-                label="Limit"
-                type="number"
-                variant="outlined"
-                value={limit}
-                onChange={(e)=>setLimit(parseInt((e.target.value!='')? e.target.value : "0"))}
-                sx={{width: "100%", m: 2}} />
+            id="limit"
+            label="Limit"
+            type="number"
+            variant="outlined"
+            value={limit}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLimit(parseInt((e.target.value!='') ? e.target.value : "0"))}
+            sx={{width: "100%", m: 2}} />
         </Box>
     )
 }
