@@ -1,35 +1,38 @@
 'use client';
 
-import { ExampleType } from "@/types/exampleType"
+import { Deck } from "@/types/deck"
+import { Colors } from "@/types/colors"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
-type ExampleContextType = {
-    examples: ExampleType[];
+type DeckContextType = {
+    colors: Colors,
+    deck: Deck[];
     limit: number;
     setLimit: (limit: number) => void;
     fetchExample: () => void;
 }
 
-const exampleContext = createContext<ExampleContextType | undefined>(undefined);
+const deckContext = createContext<DeckContextType | undefined>(undefined);
 
-export const ExampleProvider = ({children} : {children: ReactNode})=> {
-    const [examples, setExamples] = useState<ExampleType[]>([]);
+export const DeckProvider = ({children} : {children: ReactNode})=> {
+    const [colors, setColors] = useState<Colors>({white: false, blue: false, black: false, red: false, green: false})
+    const [deck, setDeck] = useState<Deck[]>([]);
     const [limit, setLimit] = useState<number>(20);
 
     function fetchExample(){
         fetch(`/api/example?limit=${limit}}`).
         then((r)=>r.json()).
-        then((d)=>setExamples(d))
+        then((d)=>setDeck(d))
     }
     return (
-        <exampleContext.Provider value={{examples, limit, setLimit, fetchExample}}>
+        <deckContext.Provider value={{deck, limit, setLimit, fetchExample}}>
             {children}
-        </exampleContext.Provider>
+        </deckContext.Provider>
     );
 }
 
 export function useExampleProvider() {
-    const context = useContext(exampleContext);
+    const context = useContext(deckContext);
     if (context===undefined) {
         throw new Error("Do better");
     }

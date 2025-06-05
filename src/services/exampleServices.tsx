@@ -1,4 +1,4 @@
-import { ExampleType } from "@/types/exampleType"
+import { ExampleType } from "@/types/deck"
 
 import { getExampleFromCache, setExampleInCache } from "@/services/exampleCache"
 

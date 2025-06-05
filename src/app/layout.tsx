@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ExampleProvider } from "./context/exampleContext";
+import { DeckProvider } from "./context/deckContext";
 
 export const metadata: Metadata = {
   title: "Assignment 7-1",
@@ -14,9 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ExampleProvider>
+        <DeckProvider>
           {children}
-        </ExampleProvider>
+        </DeckProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-export type ExampleType = {
+export type Deck = {
     id: number,
     name: string,
     imgUrl: string,

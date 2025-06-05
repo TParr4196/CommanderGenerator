@@ -1,4 +1,4 @@
-skeleton of project adapted from https://github.com/dceccacci/nextjs-boilerplate
+skeleton of project adapted from https://github.com/TParr4196/nextjs-boilerplate
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

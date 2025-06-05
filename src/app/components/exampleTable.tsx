@@ -1,10 +1,10 @@
-import { ExampleType } from "@/types/exampleType";
+import { Deck } from "@/types/deck";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import { useExampleProvider } from "../context/exampleContext";
+import { useExampleProvider } from "../context/deckContext";
 
 
 export default function ExampleTable() {
-  const { examples } = useExampleProvider();
+  const { deck } = useExampleProvider();
   const headers = [
     "ID",
     "Name",
@@ -24,7 +24,7 @@ export default function ExampleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {examples.map((d: ExampleType, i) =>
+          {deck.map((d: Deck, i) =>
             <TableRow key={i}>
               <TableCell>{d.id}</TableCell>
               <TableCell sx={{ textTransform: "capitalize" }}>{d.name}</TableCell>
