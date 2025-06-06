@@ -16,7 +16,7 @@ type DeckContextType = {
 const deckContext = createContext<DeckContextType | undefined>(undefined);
 
 export const DeckProvider = ({children} : {children: ReactNode})=> {
-    const [colors, setColors] = useState<Colors>({white: false, blue: false, black: false, red: false, green: false})
+    const [colors, setColors] = useState<Colors>({white: true, blue: true, black: true, red: true, green: true})
     const [deck, setDeck] = useState<Deck[]>([]);
     const [limit, setLimit] = useState<number>(20);
 

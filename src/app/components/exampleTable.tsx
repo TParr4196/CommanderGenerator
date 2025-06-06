@@ -1,3 +1,4 @@
+'use client'
 import { Deck } from "@/types/deck";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useExampleProvider } from "../context/deckContext";

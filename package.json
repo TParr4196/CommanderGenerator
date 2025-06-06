@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-boilerplate",
+  "name": "commander-generator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.1.0",
+    "@mui/material": "^7.1.1",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

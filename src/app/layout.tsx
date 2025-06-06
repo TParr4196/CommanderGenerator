@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DeckProvider } from "./context/deckContext";
+import { AppWrapper } from "./context/muiWrapper";
 
 export const metadata: Metadata = {
   title: "Commander Generator",
@@ -14,9 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <DeckProvider>
+        <AppWrapper>
           {children}
-        </DeckProvider>
+        </AppWrapper>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
+'use client'
 import { Box, Checkbox, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useExampleProvider } from "../context/deckContext";
 import { Colors } from "@/types/colors";
 import { colorNames } from "@/utils/colorWheel";
@@ -9,6 +10,9 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function ExampleSelect(){
     const { colors, setColors } = useExampleProvider();
+
+    useEffect(()=>{
+    },[colors])
 
     function getColors(colors: Colors){
         let colorString = ""
@@ -33,23 +37,53 @@ export default function ExampleSelect(){
     }
 
     function toggleWhite(){
-
+        setColors({
+            white: !colors.white,
+            blue: colors.blue,
+            black: colors.black,
+            red: colors.red,
+            green: colors.green
+        })
     }
 
     function toggleBlue(){
-
+        setColors({
+            white: colors.white,
+            blue: !colors.blue,
+            black: colors.black,
+            red: colors.red,
+            green: colors.green
+        })
     }
 
     function toggleBlack(){
-
+        setColors({
+            white: colors.white,
+            blue: colors.blue,
+            black: !colors.black,
+            red: colors.red,
+            green: colors.green
+        })
     }
 
     function toggleRed(){
-
+        setColors({
+            white: colors.white,
+            blue: colors.blue,
+            black: colors.black,
+            red: !colors.red,
+            green: colors.green
+        })
     }
 
     function toggleGreen(){
-
+        setColors({
+            white: colors.white,
+            blue: colors.blue,
+            black: colors.black,
+            red: colors.red,
+            green: !colors.green
+        })
     }
 
     return (
