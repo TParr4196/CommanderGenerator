@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Typography } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import { useDeckProvider } from "../context/deckContext";
-import { Colors } from "@/types/colors";
+import { getColors } from "@/services/getColors";
 import { colorNames } from "@/utils/colorWheel";
 import { grey, blue, red, green } from '@mui/material/colors';
 
@@ -16,28 +16,6 @@ export default function ExampleSelect(){
         Object.entries(colorNames).map(([key,], index) => (cols[index]=key));
         setIndexedColors(cols)
     },[])
-
-    function getColors(colors: Colors){
-        let colorString = ""
-        if(colors.white){
-            colorString+="white"
-        }
-        if(colors.blue){
-            colorString+="blue"
-        }
-        if(colors.black){
-            colorString+="black"
-        }
-        if(colors.red){
-            colorString+="red"
-        }
-        if(colors.green){
-            colorString+="green"
-        }
-        //https://stackoverflow.com/questions/57086672/element-implicitly-has-an-any-type-because-expression-of-type-string-cant-b used for cast
-        // on 6/5/25
-        return colorNames[colorString as keyof typeof colorNames]
-    }
 
     function toggleWhite(){
         setColors({
