@@ -1,11 +1,11 @@
 'use client'
 import { Deck } from "@/types/deck";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import { useExampleProvider } from "../context/deckContext";
+import { useDeckProvider } from "../context/deckContext";
 
 
 export default function ExampleTable() {
-  const { deck } = useExampleProvider();
+  const { deck } = useDeckProvider();
   const headers = [
     "ID",
     "Name",
@@ -25,7 +25,7 @@ export default function ExampleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {deck.map((d: Deck, i) =>
+          {deck?.map((d: Deck, i) =>
             <TableRow key={i}>
               <TableCell>{d.id}</TableCell>
               <TableCell sx={{ textTransform: "capitalize" }}>{d.name}</TableCell>

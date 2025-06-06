@@ -1,48 +1,47 @@
-'use client';
-
-import { Deck } from "@/types/deck"
+// import { Deck } from "@/types/deck"
 import { Colors } from "@/types/colors"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 type DeckContextType = {
     colors: Colors,
-    deck: Deck[];
-    limit: number;
+    // deck: Deck[] | undefined;
+    bracket: number;
     setColors: (colors: Colors) => void;
-    setLimit: (limit: number) => void;
-    fetchExample: () => void;
+    setBracket: (limit: number) => void;
+    // fetchExample: () => void;
 }
 
 const deckContext = createContext<DeckContextType | undefined>(undefined);
 
 export const DeckProvider = ({children} : {children: ReactNode})=> {
-    const [colors, setColors] = useState<Colors>({white: true, blue: true, black: true, red: true, green: true})
-    const [deck, setDeck] = useState<Deck[]>([]);
-    const [limit, setLimit] = useState<number>(20);
+    const [colors, setColors] = useState<Colors>({white: false, blue: false, black: false, red: false, green: false})
+    // const [deck, setDeck] = useState<Deck[] | undefined>(undefined);
+    const [bracket, setBracket] = useState<number>(2);
 
-    function fetchExample(){
-        fetch(`/api/example?limit=${limit}}`).
-        then((r)=>r.json()).
-        then((d)=>setDeck(d))
-    }
+    // useEffect(() => {
+    //     fetchExample();
+    // }, [])
+    // useEffect(()=>{
+    //     fetchExample();
+    // },[limit]);
+
+    // function fetchExample(){
+    //     fetch(`/api/example?limit=${limit}`).
+    //     then((r)=>r.json()).
+    //     then((d)=>setDeck(d))
+    // }
     return (
-        <deckContext.Provider value={{colors, deck, limit, setColors, setLimit, fetchExample}}>
+        <deckContext.Provider value={{colors, bracket, setColors, setBracket }}>
             {children}
         </deckContext.Provider>
     );
 }
 
-export function useExampleProvider() {
+export function useDeckProvider() {
     const context = useContext(deckContext);
     if (context===undefined) {
         throw new Error("Do better");
     }
-    useEffect(() => {
-        context.fetchExample();
-    }, [])
-    useEffect(()=>{
-        context.fetchExample();
-    },[context.limit]);
 
     return context;
 }
