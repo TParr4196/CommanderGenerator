@@ -1,6 +1,7 @@
 import { type NextRequest } from 'next/server'
 
 import {fetchColor} from "@/services/commanderServices"
+import { Commander } from '@/types/commander';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -16,9 +17,9 @@ export async function GET(request: NextRequest) {
     color = "witch-maw"
   } else if(color=="sans-green"){
     color = "yore-tiller"
+  } else if(color=="wubrg"){
+    color = "five-color"
   }
-
-  console.log(color)
-  let data = await fetchColor(color);
+  let data = await fetchColor(color) as Commander[];
   return Response.json(data);
 }

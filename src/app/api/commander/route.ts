@@ -4,7 +4,7 @@ import { fetchCommander } from "@/services/commanderServices"
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const limit = parseInt(searchParams.get('limit') ?? "10");
-  let data = await fetchCommander(limit);
-  return Response.json(data);
+    let commander = searchParams.get('commander')??"colorless";
+    let data = await fetchCommander(commander);
+    return Response.json(data);
 }

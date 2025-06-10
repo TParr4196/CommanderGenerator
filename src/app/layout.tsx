@@ -13,7 +13,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      {/* got help from chatgpt with setting background color */}
+      <body style={{ backgroundColor: 'lightblue' }}>
         <AppWrapper>
           {children}
         </AppWrapper>
