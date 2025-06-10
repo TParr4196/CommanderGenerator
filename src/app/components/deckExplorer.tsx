@@ -7,7 +7,7 @@ import Articles from "./articles";
 import SynergizedCards from "./synergizedCards";
 
 export default function DeckExplorer() {
-    const { deck, activeCommander: commander } = useDeckProvider();
+    const { deck } = useDeckProvider();
 
     return (
         //adapted from lastfm project

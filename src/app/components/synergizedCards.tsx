@@ -10,39 +10,39 @@ export default function SynergizedCards() {
     const [synergizedCards, setSynergizedCards] = useState<MTGCard[]>([])
 
     useEffect(()=>{
+            async function fetchPhotos() {
+            if(deck && activeCommander){
+                const check = getSynergizedCardsInCache(activeCommander.sanitized)
+                if (check){
+                    setSynergizedCards(check)
+                } else {
+                    const fetchPromises = deck.container.json_dict.cardlists[1].cardviews.map(async (card: MTGCard) => {
+                        if (!card.cards) {
+                            const scryurl = `https://api.scryfall.com/cards/named?exact=${card.name.split(" ").join("+").replace("&", "")}`;
+                            const scrydata = await fetch(scryurl);
+                            const scryresults = await scrydata.json() as ScryCard;
+                            card.imgurl = scryresults.image_uris?.large ?? null
+                        } else {
+                            for (let i = 0; i < card.cards.length; i++) {
+                                const scryurl = `https://api.scryfall.com/cards/named?exact=${card.cards[i].name.split(" ").join("+").replace("&", "")}`;
+                                const scrydata = await fetch(scryurl);
+                                const scryresults = await scrydata.json() as ScryCard;
+                                card.cards[i].imgurl = scryresults.card_faces[i].image_uris.large ?? null;
+                            }
+                        }
+                    })
+                    await Promise.all(fetchPromises);
+                    setSynergizedCards(deck.container.json_dict.cardlists[1].cardviews)
+                    setSynergizedCardsInCache(activeCommander.sanitized, deck.container.json_dict.cardlists[1].cardviews)
+                }
+            }
+        }
         if(deck){
             fetchPhotos()
         }
-    },[deck, fetchPhotos])
+    },[deck, activeCommander])
 
-    async function fetchPhotos() {
-        if(deck && activeCommander){
-            const check = getSynergizedCardsInCache(activeCommander.sanitized)
-            if (check){
-                setSynergizedCards(check)
-            } else {
-                const newSynergizedCards = new Map<string, string[]>()
-                const fetchPromises = deck.container.json_dict.cardlists[1].cardviews.map(async (card: MTGCard) => {
-                    if (!card.cards) {
-                        const scryurl = `https://api.scryfall.com/cards/named?exact=${card.name.split(" ").join("+").replace("&", "")}`;
-                        const scrydata = await fetch(scryurl);
-                        const scryresults = await scrydata.json() as ScryCard;
-                        card.imgurl = scryresults.image_uris?.large ?? null
-                    } else {
-                        for (let i = 0; i < card.cards.length; i++) {
-                            const scryurl = `https://api.scryfall.com/cards/named?exact=${card.cards[i].name.split(" ").join("+").replace("&", "")}`;
-                            const scrydata = await fetch(scryurl);
-                            const scryresults = await scrydata.json() as ScryCard;
-                            card.cards[i].imgurl = scryresults.card_faces[i].image_uris.large ?? null;
-                        }
-                    }
-                })
-                await Promise.all(fetchPromises);
-                setSynergizedCards(deck.container.json_dict.cardlists[1].cardviews)
-                setSynergizedCardsInCache(activeCommander.sanitized, deck.container.json_dict.cardlists[1].cardviews)
-            }
-        }
-    }
+    
 
     return (
         <Box sx={{

@@ -42,10 +42,6 @@ export const DeckProvider = ({children} : {children: ReactNode})=> {
         }
     },[activeCommander]);
 
-    useEffect(()=>{
-        console.log(deck)
-    },[deck])
-
     return (
         <deckContext.Provider value={{deck, colors, activeCommander, commanders, bracket, setDeck, setColors, setBracket, setActiveCommander, setCommanders }}>
             {children}
