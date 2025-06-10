@@ -28,12 +28,35 @@ export default function DeckExplorer() {
             justifyContent: 'center',
             gap: 2,
             }}>
-        <Card sx={{ minWidth: 200 }}>
-          <CardMedia
-            component="img"
-            height="275"
-            image={commander?.imgurl}
-          />
+        {commander?.cards? 
+            <Card sx={{ minWidth: 400 }}>
+                <Box sx={{display: "flex"}}>
+                <CardMedia
+                    component="img"
+                    height="275"
+                    image={commander.cards[0].imgurl}
+                />
+                <CardMedia
+                    component="img"
+                    height="275"
+                    image={commander.cards[1].imgurl}
+                />
+                </Box>
+            <CardContent>
+                <Typography gutterBottom variant="h5" component="div" sx={{justifyContent: "center", textAlign: "center", fontSize: 12}}>
+                {commander?.name}
+                <br />
+                {commander?.inclusion} Decks
+                </Typography>
+            </CardContent>
+            </Card>
+        : <Card sx={{ minWidth: 200 }}>
+            
+            <CardMedia
+                component="img"
+                height="275"
+                image={commander?.imgurl}
+            />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" sx={{justifyContent: "center", textAlign: "center", fontSize: 12}}>
               {commander?.name}
@@ -41,7 +64,7 @@ export default function DeckExplorer() {
               {commander?.inclusion} Decks
             </Typography>
           </CardContent>
-        </Card>
+        </Card>}
         <Box sx={{
             width: '100%', 
             height: '300px',

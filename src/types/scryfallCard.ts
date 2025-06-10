@@ -1,3 +1,25 @@
+export type Face = {
+  "object": string,
+  "name": string,
+  "mana_cost": string,
+  "type_line": string,
+  "oracle_text": string,
+  "colors": string[],
+  "power": string,
+  "toughness": string,
+  "artist": string,
+  "artist_id": string,
+  "illustration_id": string,
+  "image_uris": {
+    "small": string,
+    "normal": string,
+    "large": string,
+    "png": string,
+    "art_crop": string,
+    "border_crop": string
+  }
+}
+
 export type scryCard = {
   "object": string,
   "id": string,
@@ -28,8 +50,9 @@ export type scryCard = {
   "power": string,
   "toughness": string,
   "colors": string[],
-  "color_identity": string[]
-  "keywords": string[]
+  "color_identity": string[],
+  "keywords": string[],
+  "card_faces": Face[],
   "all_parts": [
     {
       "object": string,

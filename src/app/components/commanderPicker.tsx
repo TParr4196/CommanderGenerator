@@ -5,6 +5,7 @@ import { useDeckProvider } from "../context/deckContext";
 import { useEffect } from "react";
 import { scryCard } from "@/types/scryfallCard";
 import { setColorInCache } from "@/services/cache";
+import { Side } from "@/types/card";
 
 
 export default function CommanderPicker() {
@@ -29,7 +30,6 @@ export default function CommanderPicker() {
         if (commanders.length > 0) {
             let col = colors
             let newCommanders = JSON.parse(JSON.stringify(commanders))
-
             // original design: used below code for performance
             // for (let i=0; i<newCommanders.length; i++){
             //     if(!newCommanders[i].is_partner){
@@ -42,14 +42,22 @@ export default function CommanderPicker() {
 
             //got help from chatgpt with promise.all syntax
             const fetchPromises = newCommanders.map(async (commander: Commander) => {
-                if (!commander.is_partner) {
-                    const scryurl = `https://api.scryfall.com/cards/named?exact=${commander.name.split(" ").join("+")}`;
+                if (!commander.cards) {
+                    const scryurl = `https://api.scryfall.com/cards/named?exact=${commander.name.split(" ").join("+").replace("&", "")}`;
                     const scrydata = await fetch(scryurl);
                     const scryresults = await scrydata.json() as scryCard;
                     commander.imgurl = scryresults.image_uris?.large ?? null;
-                    if(!commander.imgurl){
-                      console.log(scryresults)
+                } else {
+                  for (let i = 0; i<commander.cards.length; i++){
+                    const scryurl = `https://api.scryfall.com/cards/named?exact=${commander.cards[i].name.split(" ").join("+").replace("&", "")}`;
+                    const scrydata = await fetch(scryurl);
+                    const scryresults = await scrydata.json() as scryCard;
+                    if(commander.is_partner){
+                      commander.cards[i].imgurl = scryresults.image_uris?.large ?? null;
+                    } else {
+                      commander.cards[i].imgurl = scryresults.card_faces[i].image_uris.large ?? null;
                     }
+                  }
                 }
             })
             await Promise.all(fetchPromises);
@@ -69,7 +77,29 @@ export default function CommanderPicker() {
       gap: 2,
     }}>
       {commanders.length>0? commanders.map((commander, index) => (
-        <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 200 }}>
+        commander.cards?
+        <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 400 }}>
+          <Box sx={{display: "flex"}}>
+            <CardMedia
+              component="img"
+              sx={{ width: '50%', height: 275 }}
+              image={commander.cards[0].imgurl}
+            />
+            <CardMedia
+              component="img"
+              sx={{ width: '50%', height: 275 }}
+              image={commander.cards[1].imgurl}
+            />
+          </Box>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div" sx={{justifyContent: "center", textAlign: "center", fontSize: 12}}>
+              {commander.name}
+              <br />
+              {commander.inclusion} Decks
+            </Typography>
+          </CardContent>
+        </Card>
+        : <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 200 }}>
           <CardMedia
             component="img"
             height="275"
@@ -83,7 +113,7 @@ export default function CommanderPicker() {
             </Typography>
           </CardContent>
         </Card>
-      )) : <Typography>Select A Commander</Typography>}
+      )) : <Typography>Select A Color</Typography>}
     </Box>
     )
 }

@@ -1,6 +1,7 @@
-export type side = {
+export type Side = {
     name: string,
-    url: string
+    url: string,
+    imgurl?: string
 }
 
 export type Card = {
@@ -8,7 +9,7 @@ export type Card = {
     "sanitized": string,
     "sanitized_wo": string,
     "url": string,
-    "cards"?: side[],
+    "cards"?: Side[],
     "synergy": number,
     "inclusion": number,
     "label": number,
