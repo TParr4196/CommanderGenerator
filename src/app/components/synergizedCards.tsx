@@ -42,7 +42,8 @@ export default function SynergizedCards() {
         }
     },[deck, activeCommander])
 
-    
+    useEffect(()=>{
+    },[synergizedCards])
 
     return (
         <Box sx={{
