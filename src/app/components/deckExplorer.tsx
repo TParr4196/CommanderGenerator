@@ -5,9 +5,14 @@ import { TagLink } from "@/types/deck";
 import CommanderCard from "./commanderCard";
 import Articles from "./articles";
 import SynergizedCards from "./synergizedCards";
+import { useEffect } from "react";
 
 export default function DeckExplorer() {
-    const { deck } = useDeckProvider();
+    const { deck, synergizedCards } = useDeckProvider();
+
+    useEffect(()=>{
+
+    }, [synergizedCards])
 
     return (
         //adapted from lastfm project
