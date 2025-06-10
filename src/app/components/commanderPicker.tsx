@@ -13,7 +13,7 @@ export default function CommanderPicker() {
         if (commanders[0]?.imgurl == null) {
             fetchPhotos()
         }
-    }, [commanders]);
+    }, [commanders, fetchPhotos]);
 
     async function fetchPhotos() {
         if (commanders.length > 0) {
@@ -67,16 +67,16 @@ export default function CommanderPicker() {
     }}>
       {commanders.length>0? commanders.map((commander, index) => (
         commander.cards?
-        <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 400 }}>
+        <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 450 }}>
           <Box sx={{display: "flex"}}>
             <CardMedia
               component="img"
-              sx={{ width: '50%', height: 275 }}
+              sx={{ width: '50%', height: 310 }}
               image={commander.cards[0].imgurl}
             />
             <CardMedia
               component="img"
-              sx={{ width: '50%', height: 275 }}
+              sx={{ width: '50%', height: 310 }}
               image={commander.cards[1].imgurl}
             />
           </Box>
@@ -88,10 +88,10 @@ export default function CommanderPicker() {
             </Typography>
           </CardContent>
         </Card>
-        : <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 200 }}>
+        : <Card onClick={()=>setActiveCommander(commanders[index])} key={index} sx={{ minWidth: 225 }}>
           <CardMedia
             component="img"
-            height="275"
+            height="310"
             image={commander.imgurl}
           />
           <CardContent>
