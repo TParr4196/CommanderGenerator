@@ -1,20 +1,13 @@
 'use client'
-import { Commander } from "@/types/commander";
 import { Box, Card, CardMedia, CardContent, Typography, TableCell, TableContainer, Table, TableHead, TableRow, TableBody } from "@mui/material";
 import { useDeckProvider } from "../context/deckContext";
-import { useEffect } from "react";
-import { CardList } from "@/types/cardlist";
 import { TagLink } from "@/types/deck";
 
 export default function DeckExplorer() {
-    const { colors, deck, activeCommander: commander } = useDeckProvider();
+    const { deck, activeCommander: commander } = useDeckProvider();
     const headers = [
         "Popular Tags",
     ];
-
-    useEffect(()=>{
-        console.log(deck)
-    },[deck])
 
     return (
         //adapted from lastfm project

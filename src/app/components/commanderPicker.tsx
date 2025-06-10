@@ -5,21 +5,10 @@ import { useDeckProvider } from "../context/deckContext";
 import { useEffect } from "react";
 import { scryCard } from "@/types/scryfallCard";
 import { setColorInCache } from "@/services/cache";
-import { Side } from "@/types/card";
-
 
 export default function CommanderPicker() {
     const { colors, commanders, setCommanders, setActiveCommander } = useDeckProvider();
-    const headers = [
-        "Name",
-        "Card",
-        "Number of Decks",
-    ];
-    useEffect(() => {
-        if (commanders[0]?.imgurl == null) {
-            fetchPhotos()
-        }
-    }, []);
+
     useEffect(() => {
         if (commanders[0]?.imgurl == null) {
             fetchPhotos()
@@ -28,8 +17,8 @@ export default function CommanderPicker() {
 
     async function fetchPhotos() {
         if (commanders.length > 0) {
-            let col = colors
-            let newCommanders = JSON.parse(JSON.stringify(commanders))
+            const col = colors
+            const newCommanders = JSON.parse(JSON.stringify(commanders))
             // original design: used below code for performance
             // for (let i=0; i<newCommanders.length; i++){
             //     if(!newCommanders[i].is_partner){

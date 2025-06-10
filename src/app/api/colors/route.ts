@@ -20,6 +20,6 @@ export async function GET(request: NextRequest) {
   } else if(color=="wubrg"){
     color = "five-color"
   }
-  let data = await fetchColor(color) as Commander[];
+  const data = await fetchColor(color) as Commander[];
   return Response.json(data);
 }

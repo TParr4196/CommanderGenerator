@@ -28,27 +28,19 @@ export const DeckProvider = ({children} : {children: ReactNode})=> {
     const [commanders, setCommanders] = useState<Commander[]>([])
 
     useEffect(()=>{
-        fetchCommanders();
-    },[colors])
-
-    function fetchCommanders(){
-        let identity = getColors(colors)
+        const identity = getColors(colors)
         fetch(`/api/colors?color=${identity.toLowerCase()}`)
         .then((r)=>r.json())
         .then((d)=>setCommanders(d as Commander[]))
-    }
+    },[colors])
 
     useEffect(()=>{
         if(activeCommander){
-            fetchCommander();
+            fetch(`/api/commander?commander=${activeCommander?.sanitized}`)
+                .then((r)=>r.json())
+                .then((d)=>setDeck(d as Deck))
         }
     },[activeCommander]);
-
-    function fetchCommander(){
-        fetch(`/api/commander?commander=${activeCommander?.sanitized}`)
-        .then((r)=>r.json())
-        .then((d)=>setDeck(d as Deck))
-    }
 
     useEffect(()=>{
         console.log(deck)
