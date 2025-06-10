@@ -1,8 +1,49 @@
-import { Box, TableContainer, Table, TableHead, TableRow, TableBody, Typography, TableCell } from "@mui/material"
+import { Box, Card, CardContent, Typography, CardMedia } from "@mui/material"
 import { useDeckProvider } from "../context/deckContext"
+import { useEffect, useState } from "react";
+import { Card as MTGCard } from "@/types/card";
+import { ScryCard } from "@/types/scryfallCard";
+import { getSynergizedCardsInCache, setSynergizedCardsInCache } from "@/services/cache";
 
 export default function SynergizedCards() {
-    const { deck } = useDeckProvider();
+    const { deck, activeCommander } = useDeckProvider();
+    const [synergizedCards, setSynergizedCards] = useState<MTGCard[]>([])
+
+    useEffect(()=>{
+        if(deck){
+            fetchPhotos()
+        }
+    },[deck, fetchPhotos])
+
+    async function fetchPhotos() {
+        if(deck && activeCommander){
+            const check = getSynergizedCardsInCache(activeCommander.sanitized)
+            if (check){
+                setSynergizedCards(check)
+            } else {
+                const newSynergizedCards = new Map<string, string[]>()
+                const fetchPromises = deck.container.json_dict.cardlists[1].cardviews.map(async (card: MTGCard) => {
+                    if (!card.cards) {
+                        const scryurl = `https://api.scryfall.com/cards/named?exact=${card.name.split(" ").join("+").replace("&", "")}`;
+                        const scrydata = await fetch(scryurl);
+                        const scryresults = await scrydata.json() as ScryCard;
+                        card.imgurl = scryresults.image_uris?.large ?? null
+                    } else {
+                        for (let i = 0; i < card.cards.length; i++) {
+                            const scryurl = `https://api.scryfall.com/cards/named?exact=${card.cards[i].name.split(" ").join("+").replace("&", "")}`;
+                            const scrydata = await fetch(scryurl);
+                            const scryresults = await scrydata.json() as ScryCard;
+                            card.cards[i].imgurl = scryresults.card_faces[i].image_uris.large ?? null;
+                        }
+                    }
+                })
+                await Promise.all(fetchPromises);
+                setSynergizedCards(deck.container.json_dict.cardlists[1].cardviews)
+                setSynergizedCardsInCache(activeCommander.sanitized, deck.container.json_dict.cardlists[1].cardviews)
+            }
+        }
+    }
+
     return (
         <Box sx={{
             width: '100%',
@@ -10,29 +51,57 @@ export default function SynergizedCards() {
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
             gap: 2,
         }}>
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell><Typography>Popular Cards in the 99</Typography></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {deck ? deck.panels.articles.map((a, i) =>
-                            <TableRow key={i}>
-                                {/* https://www.geeksforgeeks.org/reactjs/how-to-open-a-link-in-a-new-tab-in-nextjs/ used on 6/10/25. 
-                                    Changed from legacy behavior with ChatGPT's help */}
-                                <TableCell>{a.value}<br /><a target="_blank" href={a.href}>Click here</a></TableCell>
-                            </TableRow>
-                        ) :
-                            <TableRow>
-                                <TableCell>Loading...</TableCell>
-                            </TableRow>}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Typography>Popular Cards in the 99</Typography>
+            <Box sx={{
+                width: '99%',
+                height: '100%',
+                overflowX: 'auto',
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 2,
+            }}>
+                {deck ? synergizedCards.map((card, index) => (
+                    card.cards ?
+                        <Card key={index} sx={{ minWidth: 450 }}>
+                            <Box sx={{ display: "flex" }}>
+                                <CardMedia
+                                    component="img"
+                                    sx={{ width: '50%', height: 310 }}
+                                    image={card.cards[0].imgurl}
+                                />
+                                <CardMedia
+                                    component="img"
+                                    sx={{ width: '50%', height: 310 }}
+                                    image={card.cards[1].imgurl}
+                                />
+                            </Box>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div" sx={{ justifyContent: "center", textAlign: "center", fontSize: 12 }}>
+                                    {card.name}
+                                    <br />
+                                    {card.inclusion} Decks
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                        : <Card key={index} sx={{ minWidth: 225 }}>
+                            <CardMedia
+                                component="img"
+                                height="310"
+                                image={card.imgurl}
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div" sx={{ justifyContent: "center", textAlign: "center", fontSize: 12 }}>
+                                    {card.name}
+                                    <br />
+                                    {card.inclusion} Decks
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                )) : <Typography>Loading...</Typography>}
+            </Box>
         </Box>
     )
 }

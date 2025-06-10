@@ -20,7 +20,7 @@ export type Face = {
   }
 }
 
-export type scryCard = {
+export type ScryCard = {
   "object": string,
   "id": string,
   "oracle_id": string,

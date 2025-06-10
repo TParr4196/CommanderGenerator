@@ -14,5 +14,6 @@ export type Card = {
     "inclusion": number,
     "label": number,
     "num_decks": number,
-    "potential_decks": number
+    "potential_decks": number,
+    "imgurl"?: string
 }

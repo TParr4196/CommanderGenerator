@@ -23,7 +23,7 @@ export default function DeckExplorer() {
         }}>
             <CommanderCard/>
             <Box sx={{
-                width: '40%',
+                width: '25%',
                 height: '400px',
                 overflowY: 'auto',
                 display: 'flex',
